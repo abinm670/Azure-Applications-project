@@ -1,0 +1,78 @@
+*** create a resource:
+az group create --name jeddah --location centralindia
+
+***** Database managment 
+-Create SQL Server
+Create SQL Server:
+
+az sql server create \
+--admin-user udacityadmin \
+--admin-password Ahmed1934$ \
+--name jeddah-server \
+--resource-group jeddah \
+--location centralindia \
+--enable-public-network true \
+--verbose
+
+
+Create Firewall rule:
+
+First roll for azure 
+az sql server firewall-rule create --resource-group jeddah --server jeddah-server --name azureaccess --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+
+
+Second rule for azure, get IP locally: curl ifconfig.me:
+az sql server firewall-rule create --resource-group jeddah --server jeddah-server --name clint --start-ip-address 46.153.57.9 --end-ip-address 46.153.57.9
+
+
+
+Create SQL Database:
+
+az sql db create \
+--name jeddah-db \
+--resource-group jeddah \
+--server jeddah-server \
+--service-objective Basic \
+--verbose
+
+--------------------------------
+az sql db delete \
+--name jeddah-db \
+--resource-group jeddah  \
+--server jeddah-server \
+--verbose
+
+Delete the server
+az sql server delete \
+--name jeddah-server \
+--resource-group jeddah \
+--verbose
+
+
+
+***** Blok account:
+
+Create a storage account bolb --- this will creare tire hot costy 
+az storage account create \
+ --name storage403918 \
+ --resource-group jeddah \
+ --location centralindia
+
+create a container :
+az storage container create \
+ --name images \
+ --account-name storage403918 \
+ --auth-mode login \
+ --public-access container
+
+
+command get the storage key 
+az storage account keys list -g jeddah  -n storage403918
+
+
+Find location:
+az account list-locations
+
+Delete:
+az group delete --name ExampleResourceGroup
+az group delete --name ExampleResourceGroup
